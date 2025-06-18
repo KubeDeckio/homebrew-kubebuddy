@@ -1,11 +1,11 @@
 class Kubebuddy < Formula
-  desc "KubeBuddy - A Kubernetes assistant for PowerShell"
+  desc "A Kubernetes assistant for PowerShell"
   homepage "https://kubebuddy.io"
-  url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.23/kubebuddy-v0.0.23.tar.gz"
-  sha256 "6f3278e71df8dacbde533aa2d8cb8ff741709d90fd971d80823dd1b4c0e21723"
+  url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.24/kubebuddy-v0.0.24.tar.gz"
+  sha256 "1584dba183cb262370dbb74df3efaffa39410eb4d3b0a06a8199b0bda71d73a9"
   license "MIT"
 
-  depends_on "powershell"
+  depends_on cask: "powershell"
 
   def install
     # Install the module into libexec to avoid conflicts
