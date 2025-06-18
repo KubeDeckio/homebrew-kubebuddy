@@ -5,7 +5,7 @@ This repository provides a Homebrew tap for the KubeBuddy PowerShell module.
 ## Installation
 
 ```bash
-brew tap your-user/kubebuddy
+brew tap KubeDeckio/homebrew-kubebuddy
 brew install kubebuddy
 ```
 
