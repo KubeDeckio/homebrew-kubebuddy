@@ -11,11 +11,11 @@ class Kubebuddy < Formula
     # Install the module into libexec to avoid conflicts
     libexec.install Dir["*"]
 
-    # Install PowerShell Gallery dependencies
+    # Install PowerShell Gallery dependencies into current user scope
     system "pwsh", "-Command", <<~PS1
       Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-      Install-Module -Name powershell-yaml -Scope AllUsers -Force
-      Install-Module -Name PSAI -Scope AllUsers -Force
+      Install-Module -Name powershell-yaml -Scope CurrentUser -Force
+      Install-Module -Name PSAI -Scope CurrentUser -Force
     PS1
 
     # Create a shim script so users can invoke `kubebuddy` directly
