@@ -5,7 +5,7 @@ class Kubebuddy < Formula
   sha256 "1584dba183cb262370dbb74df3efaffa39410eb4d3b0a06a8199b0bda71d73a9"
   license "MIT"
 
-  depends_on cask: "powershell"
+  depends_on "powershell"
 
   def install
     # Install the module into libexec to avoid conflicts
