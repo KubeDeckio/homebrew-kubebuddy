@@ -5,24 +5,28 @@ class Kubebuddy < Formula
   sha256 "2f7765cb74c88162e460cbe2fb710d71081f78270a531cf7fe6b18dc3b54c2cd"
   license "MIT"
 
-  depends_on "powershell"
+  # On macOS, use the cask
+  depends_on cask: "powershell" if OS.mac?
 
   def install
-    # Install everything into libexec
+    # On Linux, check that pwsh is installed
+    if OS.linux? && which("pwsh").nil?
+      odie "PowerShell (pwsh) is required but not found. Please install it from https://aka.ms/pwsh-linux"
+    end
+
     libexec.install Dir["*"]
 
-    # Create directory for isolated PowerShell modules
+    # Install PowerShell module dependencies into an isolated path
     ps_modules = libexec/"modules"
     ps_modules.mkpath
 
-    # Save required modules into our PSModulePath
     ENV["PSModulePath"] = ps_modules.to_s
     system "pwsh", "-NoProfile", "-Command", <<~EOS
       Save-Module -Name powershell-yaml -Path "#{ps_modules}" -Force
       Save-Module -Name PSAI -Path "#{ps_modules}" -Force
     EOS
 
-    # Create a wrapper script that sets the isolated module path
+    # Create wrapper script that uses isolated module path
     (bin/"kubebuddy").write <<~EOS
       #!/usr/bin/env pwsh
       $env:PSModulePath = "#{ps_modules}" + [System.IO.Path]::PathSeparator + $env:PSModulePath
@@ -35,18 +39,20 @@ class Kubebuddy < Formula
 
   def caveats
     <<~EOS
-      If you're on Linux and encounter issues installing PowerShell:
-          brew update-reset
-        brew install powershell
+      ⚠️ PowerShell (pwsh) is required to use KubeBuddy.
 
-      If that fails:
-        brew untap homebrew/core
-        brew tap homebrew/core --force
+      On macOS, it will be installed via Homebrew Cask.
+      On Linux, please install PowerShell manually:
+
+          https://learn.microsoft.com/powershell/scripting/install/installing-powershell
+
+      You can use Snap, apt, yum, or manual tarball extraction.
+
+      After installing, ensure 'pwsh' is in your PATH.
     EOS
   end
 
   test do
-    # Simple test: command should output help text or known marker
     assert_match "KubeBuddy", shell_output("#{bin}/kubebuddy -h", 1)
   end
 end
