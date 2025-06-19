@@ -2,7 +2,7 @@ class Kubebuddy < Formula
   desc "A Kubernetes assistant for PowerShell"
   homepage "https://kubebuddy.io"
   url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.24/kubebuddy-v0.0.24.tar.gz"
-  sha256 ""
+  sha256 "2f7765cb74c88162e460cbe2fb710d71081f78270a531cf7fe6b18dc3b54c2cd"
   license "MIT"
 
   depends_on "powershell"
