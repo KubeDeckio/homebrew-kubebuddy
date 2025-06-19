@@ -33,6 +33,18 @@ class Kubebuddy < Formula
     chmod 0755, bin/"kubebuddy"
   end
 
+  def caveats
+    <<~EOS
+      If you're on Linux and encounter issues installing PowerShell:
+          brew update-reset
+        brew install powershell
+
+      If that fails:
+        brew untap homebrew/core
+        brew tap homebrew/core --force
+    EOS
+  end
+
   test do
     # Simple test: command should output help text or known marker
     assert_match "KubeBuddy", shell_output("#{bin}/kubebuddy -h", 1)
