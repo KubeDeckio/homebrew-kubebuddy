@@ -6,7 +6,7 @@ class Kubebuddy < Formula
   license "MIT"
 
   # On macOS, use the cask
-  depends_on cask: "powershell" if OS.mac?
+  depends_on  "powershell" if OS.mac?
 
   def install
     # On Linux, check that pwsh is installed
