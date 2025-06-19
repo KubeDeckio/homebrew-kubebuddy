@@ -1,32 +1,41 @@
 class Kubebuddy < Formula
-  desc "A Kubernetes assistant for PowerShell"
+  desc "Smart Kubernetes scanner built for PowerShell, CI, and secure audits"
   homepage "https://kubebuddy.io"
   url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.23/kubebuddy-v0.0.23.tar.gz"
   sha256 "af43c8ce599bc4596a03531a3f3755d45c75ea50cf8e9e27720afd560cf250ea"
   license "MIT"
 
-  # On macOS, use the cask
-  depends_on  "powershell" if OS.mac?
-
   def install
-    # On Linux, check that pwsh is installed
-    if OS.linux? && which("pwsh").nil?
-      odie "PowerShell (pwsh) is required but not found. Please install it from https://aka.ms/pwsh-linux"
+    # Abort if PowerShell is not installed
+    unless which("pwsh")
+      odie <<~EOS
+        PowerShell (pwsh) is required but not found.
+
+        ➤ On macOS:
+            brew install --cask powershell
+
+        ➤ On Linux:
+            https://aka.ms/pwsh-linux
+
+        After installing, make sure 'pwsh' is in your PATH and try again.
+      EOS
     end
 
+    # Install main module files
     libexec.install Dir["*"]
 
-    # Install PowerShell module dependencies into an isolated path
+    # Set up isolated PSModulePath
     ps_modules = libexec/"modules"
     ps_modules.mkpath
-
     ENV["PSModulePath"] = ps_modules.to_s
+
+    # Download dependencies into isolated path
     system "pwsh", "-NoProfile", "-Command", <<~EOS
       Save-Module -Name powershell-yaml -Path "#{ps_modules}" -Force
       Save-Module -Name PSAI -Path "#{ps_modules}" -Force
     EOS
 
-    # Create wrapper script that uses isolated module path
+    # Create wrapper executable
     (bin/"kubebuddy").write <<~EOS
       #!/usr/bin/env pwsh
       $env:PSModulePath = "#{ps_modules}" + [System.IO.Path]::PathSeparator + $env:PSModulePath
@@ -39,16 +48,15 @@ class Kubebuddy < Formula
 
   def caveats
     <<~EOS
-      ⚠️ PowerShell (pwsh) is required to use KubeBuddy.
+      ⚠️ PowerShell (pwsh) is required to run KubeBuddy.
 
-      On macOS, it will be installed via Homebrew Cask.
-      On Linux, please install PowerShell manually:
+      ➤ On macOS:
+          brew install --cask powershell
 
+      ➤ On Linux:
           https://learn.microsoft.com/powershell/scripting/install/installing-powershell
 
-      You can use Snap, apt, yum, or manual tarball extraction.
-
-      After installing, ensure 'pwsh' is in your PATH.
+      Once installed, make sure 'pwsh' is in your PATH and re-run this tool.
     EOS
   end
 
