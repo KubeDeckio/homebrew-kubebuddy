@@ -8,27 +8,33 @@ class Kubebuddy < Formula
   depends_on "powershell"
 
   def install
-    # Install the module into libexec to avoid conflicts
+    # Install everything into libexec
     libexec.install Dir["*"]
 
-    # Install PowerShell Gallery dependencies into current user scope
-    system "pwsh", "-Command", <<~PS1
-      Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
-      Install-Module -Name powershell-yaml -Scope CurrentUser -Force
-      Install-Module -Name PSAI -Scope CurrentUser -Force
-    PS1
+    # Create directory for isolated PowerShell modules
+    ps_modules = libexec/"modules"
+    ps_modules.mkpath
 
-    # Create a shim script so users can invoke `kubebuddy` directly
+    # Save required modules into our PSModulePath
+    ENV["PSModulePath"] = ps_modules.to_s
+    system "pwsh", "-NoProfile", "-Command", <<~EOS
+      Save-Module -Name powershell-yaml -Path "#{ps_modules}" -Force
+      Save-Module -Name PSAI -Path "#{ps_modules}" -Force
+    EOS
+
+    # Create a wrapper script that sets the isolated module path
     (bin/"kubebuddy").write <<~EOS
       #!/usr/bin/env pwsh
+      $env:PSModulePath = "#{ps_modules}" + [System.IO.Path]::PathSeparator + $env:PSModulePath
       Import-Module "#{libexec}/KubeBuddy.psd1" -Force
       Invoke-KubeBuddy @Args
     EOS
+
     chmod 0755, bin/"kubebuddy"
   end
 
   test do
-    # Basic smoke test: ensure help text includes the module name
+    # Simple test: command should output help text or known marker
     assert_match "KubeBuddy", shell_output("#{bin}/kubebuddy -h", 1)
   end
 end
