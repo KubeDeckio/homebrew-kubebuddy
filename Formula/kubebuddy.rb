@@ -2,7 +2,7 @@ class Kubebuddy < Formula
   desc "Smart Kubernetes scanner built for PowerShell, CI, and secure audits"
   homepage "https://kubebuddy.io"
   url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.25/kubebuddy-v0.0.25.tar.gz"
-  sha256 "9260e9f9b8da6eefd9441204954c97cc8b2cf7ef9796542368b59692ced5df13"
+  sha256 "a3eb39ddb681d39be0cfe0599082892bdca9e905d2d4d9b898b38e450e4c268c"
   license "MIT"
 
   def install
