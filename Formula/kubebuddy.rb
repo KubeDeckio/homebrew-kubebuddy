@@ -2,6 +2,7 @@ class Kubebuddy < Formula
   desc "Native Kubernetes and AKS scanner for reports, audits, and CI"
   homepage "https://kubebuddy.kubedeck.io"
   license "MIT"
+  version "0.0.28"
 
   on_macos do
     if Hardware::CPU.arm?
