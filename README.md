@@ -1,6 +1,6 @@
 # Homebrew Tap for KubeBuddy
 
-This repository provides a Homebrew tap for the KubeBuddy PowerShell module.
+This repository provides the Homebrew tap for the native KubeBuddy CLI.
 
 ## Installation
 
@@ -12,5 +12,6 @@ brew install kubebuddy
 ## Usage
 
 ```bash
-kubebuddy --help
+kubebuddy version
+kubebuddy run --html-report --yes --output-path ./reports
 ```

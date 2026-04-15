@@ -1,66 +1,34 @@
 class Kubebuddy < Formula
-  desc "Smart Kubernetes scanner built for PowerShell, CI, and secure audits"
-  homepage "https://kubebuddy.io"
-  url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.27/kubebuddy-v0.0.27.tar.gz"
-  sha256 "0fc011eb78e39b67fb566f530477eaf7a6eb48d74b1d305b41b2b9ac6066eb17"
+  desc "Native Kubernetes and AKS scanner for reports, audits, and CI"
+  homepage "https://kubebuddy.kubedeck.io"
   license "MIT"
 
-  def install
-    # Abort if PowerShell is not installed
-    unless which("pwsh")
-      odie <<~EOS
-        PowerShell (pwsh) is required but not found.
-
-        ➤ On macOS:
-            brew install --cask powershell
-
-        ➤ On Linux:
-            https://aka.ms/pwsh-linux
-
-        After installing, make sure 'pwsh' is in your PATH and try again.
-      EOS
+  on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_darwin_arm64.tar.gz"
+      sha256 "57f41a7fbc0d0f1b3f36bca9c88cb4d3df25d7aa5ffdd889d6e867117cfea7ff"
+    else
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_darwin_amd64.tar.gz"
+      sha256 "bb1dbfd0d6b8d1ec36588e9297a11352ad9f9d7e8c6513b18ab6f977a98750f3"
     end
-
-    # Install main module files
-    libexec.install Dir["*"]
-
-    # Set up isolated PSModulePath
-    ps_modules = libexec/"modules"
-    ps_modules.mkpath
-    ENV["PSModulePath"] = ps_modules.to_s
-
-    # Download dependencies into isolated path
-    system "pwsh", "-NoProfile", "-Command", <<~EOS
-      Save-Module -Name powershell-yaml -Path "#{ps_modules}" -Force
-      Save-Module -Name PSAI -Path "#{ps_modules}" -Force
-    EOS
-
-    # Create wrapper executable
-    (bin/"kubebuddy").write <<~EOS
-      #!/usr/bin/env pwsh
-      $env:PSModulePath = "#{ps_modules}" + [System.IO.Path]::PathSeparator + $env:PSModulePath
-      Import-Module "#{libexec}/KubeBuddy.psd1" -Force
-      Invoke-KubeBuddy @Args
-    EOS
-
-    chmod 0755, bin/"kubebuddy"
   end
 
-  def caveats
-    <<~EOS
-      ⚠️ PowerShell (pwsh) is required to run KubeBuddy.
+  on_linux do
+    if Hardware::CPU.arm?
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_linux_arm64.tar.gz"
+      sha256 "8e1eea25213d56b724737f899da2f5fc71bb47b32d96c1decd7978ff59ba33c6"
+    else
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_linux_amd64.tar.gz"
+      sha256 "56755b6edca90e5e5c42fddebd5688210f7ea0ddde392c42078be8ed451ed284"
+    end
+  end
 
-      ➤ On macOS:
-          brew install --cask powershell
-
-      ➤ On Linux:
-          https://learn.microsoft.com/powershell/scripting/install/installing-powershell
-
-      Once installed, make sure 'pwsh' is in your PATH and re-run this tool.
-    EOS
+  def install
+    bin.install "kubebuddy"
+    pkgshare.install "README.md", "LICENSE"
   end
 
   test do
-    assert_match "KubeBuddy", shell_output("#{bin}/kubebuddy -h", 1)
+    assert_match version.to_s, shell_output("#{bin}/kubebuddy version")
   end
 end
