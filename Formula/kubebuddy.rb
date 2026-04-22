@@ -2,25 +2,24 @@ class Kubebuddy < Formula
   desc "Native Kubernetes and AKS scanner for reports, audits, and CI"
   homepage "https://kubebuddy.kubedeck.io"
   license "MIT"
-  version "0.0.28"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_darwin_arm64.tar.gz"
-      sha256 "03e0eca304cb0038fe981e1f7555320478453ae388dd869024e2919a858924b1"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.29/kubebuddy_0.0.29_darwin_arm64.tar.gz"
+      sha256 "bf25b21b045e642e9cb3b9e8137dede6f7db8b7db7c8bee9248e55dbc26db0d5"
     else
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_darwin_amd64.tar.gz"
-      sha256 "f43173ab1996840eb4493b0dc10b0c9ef1622f326a2e9058554c332ed9f79606"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.29/kubebuddy_0.0.29_darwin_amd64.tar.gz"
+      sha256 "6f82eeb10adc5ea9511ef2ed76b1a8d1e9ddf203bf7c1d6b3f5cf73c6513d9a5"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_linux_arm64.tar.gz"
-      sha256 "0e2959fa3c576e0fc71e938483a228d822b5ee6358bf2eec68c2ed11127c5ce7"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.29/kubebuddy_0.0.29_linux_arm64.tar.gz"
+      sha256 "ba4dacae07d2724b08c53d6d34be034c5a25a6aa96823c4eadaa2394de5ba3f9"
     else
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.28/kubebuddy_0.0.28_linux_amd64.tar.gz"
-      sha256 "99bb8b5064441b21d643b906de07884760e142b8f23b7655f48d32858234f737"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.29/kubebuddy_0.0.29_linux_amd64.tar.gz"
+      sha256 "32a9375015eaf7948f0d41c6d8baa7865e1f25c495470c2bf69bca4a2da5675e"
     end
   end
 
