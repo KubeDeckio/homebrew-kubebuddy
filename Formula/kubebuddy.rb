@@ -5,21 +5,21 @@ class Kubebuddy < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.34/kubebuddy_0.0.34_darwin_arm64.tar.gz"
-      sha256 "e0656fd00f42ac05d32a6f3c0197e2069fd8d2fb00a00016d5313ee266645b86"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.35/kubebuddy_0.0.35_darwin_arm64.tar.gz"
+      sha256 "9b33a6110fd1a6c929cd160193c3295242d7c175a8c84c14c59722884b8fafa6"
     else
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.34/kubebuddy_0.0.34_darwin_amd64.tar.gz"
-      sha256 "28e83e79049fe04058aa09ef9770b84cecf238ed46379c2b1fe9f449949c0ecc"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.35/kubebuddy_0.0.35_darwin_amd64.tar.gz"
+      sha256 "a50342a56e06ade48964ca2685ec37ed36490cde5404d1d7b80714d342412f23"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.34/kubebuddy_0.0.34_linux_arm64.tar.gz"
-      sha256 "fdd20b6ea0c5df235d01b18f1b48df91769e72331e18b269ae81ccd9729134f0"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.35/kubebuddy_0.0.35_linux_arm64.tar.gz"
+      sha256 "2d564475157bda23045abcaa81c2a217383c22f95e40859f3fe73df2953a60c6"
     else
-      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.34/kubebuddy_0.0.34_linux_amd64.tar.gz"
-      sha256 "3fdf663ab627df0b9e0a015a81554a6228922373b7390302d801b5a7be7eb6a9"
+      url "https://github.com/KubeDeckio/KubeBuddy/releases/download/v0.0.35/kubebuddy_0.0.35_linux_amd64.tar.gz"
+      sha256 "799c8beffe38736421e5385381b5b16911d1d8dc211c0d972a415a5dee668e2a"
     end
   end
 
